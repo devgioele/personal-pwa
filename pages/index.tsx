@@ -3,7 +3,7 @@ import { Container } from '@mui/material';
 
 const Home: NextPage = () => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ width: '80%' }}>
       <h1>Home Page</h1>
       <p>
         <span>

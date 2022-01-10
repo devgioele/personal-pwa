@@ -10,7 +10,9 @@ const Header = () => {
     <>
       <AppBar position="fixed">
         <Toolbar disableGutters>
-          <Container maxWidth="lg">Gioele De Vitti</Container>
+          <Container maxWidth="lg" sx={{ width: '80%' }}>
+            Gioele De Vitti
+          </Container>
         </Toolbar>
       </AppBar>
       <Offset />
