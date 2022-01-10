@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
-import theme from '../src/theming/theme';
-import createEmotionCache from '../src/styling/createEmotionCache';
+import createEmotionCache from 'styling/createEmotionCache';
+import theme from 'theming/theme';
 
 type MyDocumentAdditionalProps = {
   emotionStyleTags: JSX.Element[];
@@ -10,7 +10,6 @@ type MyDocumentAdditionalProps = {
 
 export default class MyDocument extends Document<MyDocumentAdditionalProps> {
   render() {
-    this.props;
     // noinspection HtmlRequiredTitleElement,HtmlUnknownTarget
     return (
       <Html lang="en">
