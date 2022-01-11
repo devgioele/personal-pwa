@@ -2,7 +2,7 @@
 // https://nextjs.org/docs/#with-link
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import NextLinkComposed from '../modules/molecules/NextLinkComposed';
+import NextLinkComposed from 'modules/molecules/NextLinkComposed';
 import React from 'react';
 import MuiLink from '@mui/material/Link';
 
