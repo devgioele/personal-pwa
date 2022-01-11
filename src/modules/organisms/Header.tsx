@@ -13,7 +13,7 @@ export default function Header({ maxWidth, width }: NavbarProps) {
   return (
     <>
       <AppBar position="fixed">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters variant="dense">
           <Container maxWidth={maxWidth} sx={{ width }}>
             Gioele De Vitti
           </Container>
