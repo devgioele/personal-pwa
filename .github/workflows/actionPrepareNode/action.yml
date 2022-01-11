@@ -1,0 +1,25 @@
+name: 'Prepare Node.js'
+description: 'Prepares Node.js by setting it up and installing dependencies'
+runs:
+  using: 'composite'
+  steps:
+    - name: Load source code
+      uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16'
+    - name: Cache node modules
+      id: node-cache
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        # We generate a hash from the lock file and use that as key for the cache
+        # This causes the cache to be uniquely identified by the lock file.
+        # If the lock file changes, the cache is invalidated.
+        key: node-modules-${{ hashFiles('yarn.lock') }}
+    - name: Install dependencies
+      # Run only if cache is invalid
+      if: steps.node-cache.outputs.cache-hit != 'true'
+      run: yarn
+      shell: bash
