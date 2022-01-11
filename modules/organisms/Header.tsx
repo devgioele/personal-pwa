@@ -1,21 +1,25 @@
 import AppBar from '@mui/material/AppBar';
-import Container from '@mui/material/Container';
+import Container, { ContainerProps } from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import { styled } from '@mui/material';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-const Header = () => {
+type NavbarProps = Pick<ContainerProps, 'maxWidth'> & {
+  width: string;
+};
+
+export default function Header({ maxWidth, width }: NavbarProps) {
   return (
     <>
       <AppBar position="fixed">
-        <Toolbar disableGutters>
-          <Container maxWidth="lg">Gioele De Vitti</Container>
+        <Toolbar disableGutters variant="dense">
+          <Container maxWidth={maxWidth} sx={{ width }}>
+            Gioele De Vitti
+          </Container>
         </Toolbar>
       </AppBar>
       <Offset />
     </>
   );
-};
-
-export default Header;
+}
