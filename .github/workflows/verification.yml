@@ -1,0 +1,23 @@
+name: Verification
+on:
+  pull_request:
+    branches:
+      - development
+      - main
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load source code
+        uses: actions/checkout@v2
+      - name: Evaluate code quality
+        uses: ./.github/workflows/actionQuality
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load source code
+        uses: actions/checkout@v2
+      - name: Prepare Node.js
+        uses: ./.github/workflows/actionPrepareNode
+      - name: Build
+        run: yarn build
