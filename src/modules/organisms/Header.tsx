@@ -9,7 +9,7 @@ type NavbarProps = Pick<ContainerProps, 'maxWidth'> & {
   width: string;
 };
 
-export default function Navbar({ maxWidth, width }: NavbarProps) {
+export default function Header({ maxWidth, width }: NavbarProps) {
   return (
     <>
       <AppBar position="fixed">
