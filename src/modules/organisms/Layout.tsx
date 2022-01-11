@@ -9,7 +9,11 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <Grid container direction="column" style={{ height: '100vh' }}>
+    <Grid
+      container
+      direction="column"
+      style={{ height: '100vh', flexWrap: 'nowrap' }}
+    >
       <Grid item>
         <Navbar maxWidth="lg" width="80%" />
       </Grid>
