@@ -1,0 +1,16 @@
+name: 'Evaluate quality of code'
+description: 'Runs ESLint and unit tests'
+runs:
+  using: 'composite'
+  steps:
+    - name: Load source code
+      uses: actions/checkout@v2
+    - name: Prepare Node.js
+      uses: ./.github/workflows/actionPrepareNode
+    - name: Run ESLint
+      # Do not autofix violations and do not tolerate warnings
+      run: yarn lint
+      shell: bash
+    - name: Run unit tests
+      run: yarn test:devops
+      shell: bash
