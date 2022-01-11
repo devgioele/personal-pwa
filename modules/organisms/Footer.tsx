@@ -1,15 +1,11 @@
 import Container, { ContainerProps } from '@mui/material/Container';
 
-type FooterProps = Pick<ContainerProps, 'maxWidth'> & {
-  width: string;
-};
+type FooterProps = Pick<ContainerProps, 'maxWidth'>;
 
-export default function Footer({ maxWidth, width }: FooterProps) {
+export default function Footer({ maxWidth }: FooterProps) {
   return (
     <footer>
-      <Container maxWidth={maxWidth} sx={{ width }}>
-        Footer
-      </Container>
+      <Container maxWidth={maxWidth}>Footer</Container>
     </footer>
   );
 }
