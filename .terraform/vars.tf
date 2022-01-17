@@ -24,3 +24,7 @@ variable "gcp_org_id" {}
 variable "gcp_region" {}
 
 variable "gcp_creds" {}
+
+variable "ssl_certificate" {}
+
+variable "ssl_key" {}
