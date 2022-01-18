@@ -5,6 +5,7 @@ on:
       - development
 jobs:
   quality:
+    name: Code quality
     runs-on: ubuntu-latest
     steps:
       - name: Load source code
@@ -12,6 +13,7 @@ jobs:
       - name: Evaluate code quality
         uses: ./.github/workflows/actionQuality
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Load source code

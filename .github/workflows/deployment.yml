@@ -3,11 +3,14 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-deploy:
+  provision-build-start:
+    name: Provision, build, start
     runs-on: ubuntu-latest
-    name: Build and deploy
     environment:
       name: production
       url: https://devgio.xyz
@@ -69,6 +72,8 @@ jobs:
         run: exit 1
       - name: Terraform Apply
         id: apply
+        # If a commit is pushed on the main branch
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
       - name: Copy source code to the compute engine instance
         uses: actions-hub/gcloud@master
