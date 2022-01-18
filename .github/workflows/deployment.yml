@@ -47,6 +47,7 @@ jobs:
           # The env variable PROJECT_ID is set by the step above
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
         with:
+          # 'force-key-file-overwrite' overwrites the SSH keys without asking for confirmation
           args: >
             compute scp . ${{ env.INSTANCE_ID }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
             --zone=${{ env.COMPUTE_ZONE }} --recurse --force-key-file-overwrite
