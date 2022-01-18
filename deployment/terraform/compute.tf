@@ -22,7 +22,7 @@ resource "google_compute_instance" "default" {
   }
 
   # Causes a recreation of the resource if changed
-  metadata_startup_script = file(var.compute_startup)
+  metadata_startup_script = file(var.compute_setup)
   depends_on              = [google_project_service.service]
 }
 
