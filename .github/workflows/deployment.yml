@@ -55,6 +55,9 @@ jobs:
             --recurse
       - name: Build and start
         uses: actions-hub/gcloud@master
+        env:
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDS }}
+          CLOUDSDK_COMPUTE_ZONE: ${{ env.COMPUTE_ZONE }}
         with:
           # 1. ssh into the instance
           # 2. export GitHub secrets as env vars
