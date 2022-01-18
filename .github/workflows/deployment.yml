@@ -53,7 +53,7 @@ jobs:
         with:
           # 'force-key-file-overwrite' overwrites the SSH keys without asking for confirmation
           args: >
-            compute scp ${GITHUB_WORKSPACE}/ ${{ env.INSTANCE_NAME }}:~/${DEPLOYMENT_ID}
+            compute scp ${GITHUB_WORKSPACE}/ ${{ env.INSTANCE_NAME }}:~/${{ env.DEPLOYMENT_ID }}
             --recurse
       - name: Build and start
         uses: actions-hub/gcloud@master
@@ -67,5 +67,5 @@ jobs:
           args: >
             compute ssh ${{ env.INSTANCE_NAME }} --command
             'export TOR_PRIVATE_KEY=${{ secrets.TOR_PRIVATE_KEY }} &&
-            ls -la ${DEPLOYMENT_ID} &&
-            ./${DEPLOYMENT_ID}/deployment/startup.sh'
+            ls -la ${{ env.DEPLOYMENT_ID }} &&
+            ./${{ env.DEPLOYMENT_ID }}/deployment/startup.sh'
