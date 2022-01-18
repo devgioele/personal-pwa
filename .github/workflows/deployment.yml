@@ -37,10 +37,12 @@ jobs:
         run: terraform apply -auto-approve
       - name: Extract output of Terraform Apply
         run: |
-          echo "project_id -> '$(terraform output -raw project_id)'"
-          echo "instance_id -> '$(terraform output -raw instance_id)'"
-          echo "PROJECT_ID=$(terraform output -raw project_id)" >> $GITHUB_ENV
-          echo "INSTANCE_ID=$(terraform output -raw instance_id)" >> $GITHUB_ENV
+          echo "PROJECT_ID<<EOF" >> $GITHUB_ENV
+          terraform output -raw project_id >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "INSTANCE_ID<<EOF" >> $GITHUB_ENV
+          terraform output -raw instance_id >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
       - name: Copy source code
         uses: actions-hub/gcloud@master
         env:
