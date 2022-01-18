@@ -53,14 +53,19 @@ jobs:
           script: |
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outputs.stdout }}\`
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            
             <details><summary>Show Plan</summary>
+            
             \`\`\`\n
             ${process.env.PLAN}
             \`\`\`
+            
             </details>
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -74,7 +79,7 @@ jobs:
         id: apply
         # If a commit is pushed on the main branch
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -var-file="definition.tfvars" -auto-approve
+        run: terraform apply -auto-approve
       - name: Copy source code to the compute engine instance
         uses: actions-hub/gcloud@master
         env:
