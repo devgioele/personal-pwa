@@ -21,12 +21,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Print GITHUB_WORKFLOW
-        run: echo "${GITHUB_RUN_NUMBER}"
-        working-directory: /
-      - name: Print GITHUB_RUN_NUMBER
-        run: echo "${GITHUB_RUN_NUMBER}"
-        working-directory: /
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -48,12 +42,6 @@ jobs:
           echo "INSTANCE_NAME=$(terraform output -raw instance_name)" >> $GITHUB_ENV
           echo "COMPUTE_ZONE=$(terraform output -raw compute_zone)" >> $GITHUB_ENV
           echo "GCP_CREDS=$(terraform output -raw gcp_creds)" >> $GITHUB_ENV
-      - name: Print GITHUB_WORKFLOW
-        run: echo "${GITHUB_RUN_NUMBER}"
-        working-directory: /
-      - name: Print GITHUB_RUN_NUMBER
-        run: echo "${GITHUB_RUN_NUMBER}"
-        working-directory: /
       - name: Copy source code
         uses: actions-hub/gcloud@master
         env:
@@ -62,7 +50,7 @@ jobs:
         with:
           # 'force-key-file-overwrite' overwrites the SSH keys without asking for confirmation
           args: >
-            compute scp ${{ env.GITHUB_WORKSPACE }}/ ${{ env.INSTANCE_NAME }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
+            compute scp ${GITHUB_WORKSPACE}/ ${{ env.INSTANCE_NAME }}:~/deployment-${GITHUB_RUN_NUMBER}
             --zone=${{ env.COMPUTE_ZONE }} --recurse
       - name: Build and start
         uses: actions-hub/gcloud@master
