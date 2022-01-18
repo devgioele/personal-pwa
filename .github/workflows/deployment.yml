@@ -76,14 +76,15 @@ jobs:
       - name: Quit if Terraform Plan failed
         if: steps.plan.outcome == 'failure'
         run: exit 1
-      - name: Quit silently if this is not a push on the main branch
-        if: github.ref != 'refs/heads/main' || github.event_name != 'push'
-        run: exit 0
       - name: Terraform Apply
         id: apply
+        # If a commit is pushed on the main branch
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
       - name: Copy source code to the compute engine instance
         uses: actions-hub/gcloud@master
+        # If a commit is pushed on the main branch
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
           PROJECT_ID: ${{ steps.apply.outputs.project_id }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
@@ -93,6 +94,8 @@ jobs:
             --recurse
       - name: Build and start
         uses: actions-hub/gcloud@master
+        # If a commit is pushed on the main branch
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
           PROJECT_ID: ${{ steps.apply.outputs.project_id }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
