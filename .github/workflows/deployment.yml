@@ -12,10 +12,10 @@ jobs:
       name: production
       url: https://devgio.xyz
     # Default parameters
-    defaults:
-      # For steps using 'run'
-      run:
-        working-directory: deployment/terraform
+#    defaults:
+#      # For steps using 'run'
+#      run:
+#        working-directory: deployment/terraform
     steps:
       - name: List home dir
         run: ls -la ${{ env.HOME }}
