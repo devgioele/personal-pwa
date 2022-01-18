@@ -35,14 +35,18 @@ jobs:
       - name: Terraform Apply
         id: apply
         run: terraform apply -auto-approve
-      - name: Copy source code to the compute engine instance
+      - name: Extract output of Terraform Apply
+        run: |
+          echo "PROJECT_ID=$(terraform output -raw project_id)" >> $PROJECT_ID
+          echo "INSTANCE_ID=$(terraform output -raw instance_id)" >> $INSTANCE_ID
+      - name: Copy source code
         uses: actions-hub/gcloud@master
         env:
-          PROJECT_ID: ${{ steps.apply.outputs.project_id }}
+          # The env variable PROJECT_ID is set by the step above
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
         with:
           args: |
-            compute scp . ${{ steps.apply.outputs.instance_id }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
+            compute scp . ${{ env.INSTANCE_ID }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
             --recurse
       - name: Build and start
         uses: actions-hub/gcloud@master
