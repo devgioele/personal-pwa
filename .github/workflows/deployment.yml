@@ -8,8 +8,6 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    env:
-      DEPLOYMENT_ID: deployment-${GITHUB_RUN_NUMBER}
     environment:
       name: production
       url: https://devgio.xyz
@@ -19,6 +17,9 @@ jobs:
       run:
         working-directory: deployment/terraform
     steps:
+      - name: Setup environment
+        run: |
+          echo "DEPLOYMENT_ID=deployment-$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
       - name: Load source code
         uses: actions/checkout@v2
         with:
