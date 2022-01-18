@@ -1,0 +1,98 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    name: Build and deploy
+    environment:
+      name: production
+      url: https://devgio.xyz
+    # Default parameters
+    defaults:
+      # For steps using 'run'
+      run:
+        working-directory: ./deployment/terraform
+    steps:
+      - name: Load source code
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          # terraform_version: 0.13.0
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+        working-directory: ./terraform
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        working-directory: ./terraform
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        working-directory: ./terraform
+      - name: Terraform Plan
+        id: plan
+        if: github.event_name == 'pull_request'
+        run: terraform plan -no-color
+        working-directory: ./terraform
+        continue-on-error: true
+      - name: Update Pull Request
+        uses: actions/github-script@0.9.0
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            <details><summary>Show Plan</summary>
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+            </details>
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+      - name: Quit if Terraform Plan failed
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve
+      - name: Copy source code to the compute engine instance
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ steps.apply.outputs.project_id }}
+          APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
+        with:
+          args: |
+            compute scp . ${{ steps.apply.outputs.instance_id }}:~/deploy-${{ env.GITHUB_RUN_NUMBER }}
+            --recurse
+      - name: Build and start
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ steps.apply.outputs.project_id }}
+          APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
+        with:
+          # 1. ssh into the instance
+          # 2. export GitHub secrets as env vars
+          # 3. run the startup script
+          args: |
+            compute ssh ${{ steps.apply.outputs.instance_id }} -- 
+            'export TOR_PRIVATE_KEY=${{ secrets.TOR_PRIVATE_KEY }} &&
+            ./deployment/startup.sh'
