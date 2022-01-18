@@ -47,9 +47,10 @@ jobs:
           # The env variable PROJECT_ID is set by the step above
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
         with:
+          # 'force-key-file-overwrite' overwrites the SSH keys without asking for confirmation
           args: >
             compute scp . ${{ env.INSTANCE_ID }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
-             --zone=${{ env.COMPUTE_ZONE }} --recurse
+            --zone=${{ env.COMPUTE_ZONE }} --recurse --force-key-file-overwrite
       - name: Build and start
         uses: actions-hub/gcloud@master
         env:
@@ -61,5 +62,5 @@ jobs:
           # 3. run the startup script
           args: >
             compute ssh ${{ steps.apply.outputs.instance_id }} --command
-             'export TOR_PRIVATE_KEY=${{ secrets.TOR_PRIVATE_KEY }} &&
-             ./deployment/startup.sh'
+            'export TOR_PRIVATE_KEY=${{ secrets.TOR_PRIVATE_KEY }} &&
+            ./deployment/startup.sh'
