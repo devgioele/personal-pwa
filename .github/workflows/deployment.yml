@@ -5,9 +5,9 @@ on:
       - main
 
 jobs:
-  build-deploy:
+  provision-build-start:
+    name: Provision, build, start
     runs-on: ubuntu-latest
-    name: Build and deploy
     environment:
       name: production
       url: https://devgio.xyz
