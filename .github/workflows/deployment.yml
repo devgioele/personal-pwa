@@ -43,7 +43,9 @@ jobs:
           echo "PROJECT_ID=$(terraform output -raw project_id)" >> $GITHUB_ENV
           echo "INSTANCE_ID=$(terraform output -raw instance_id)" >> $GITHUB_ENV
           echo "COMPUTE_ZONE=$(terraform output -raw compute_zone)" >> $GITHUB_ENV
-          echo "GITHUB_ACTIONS_KEY=$(terraform output -raw github_actions_key)" >> $GITHUB_ENV
+          echo 'GITHUB_ACTIONS_KEY<<EOF' >> $GITHUB_ENV
+          terraform output -raw github_actions_key >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
       - name: Copy source code
         uses: actions-hub/gcloud@master
         env:
