@@ -5,4 +5,4 @@ gcp_compute_image         = "ubuntu-minimal-2110-impish-v20220111"
 gcp_compute_setup         = "setup.sh"
 gcp_service_account_email = "terraform@devgio-terraform-admin.iam.gserviceaccount.com"
 gcp_service_account_name  = "Terraform service account"
-gcp_enabled_apis          = ["compute.googleapis.com"]
+gcp_enabled_apis          = ["compute.googleapis.com", "cloudresourcemanager.googleapis.com"]
