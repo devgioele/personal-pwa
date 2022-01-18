@@ -52,10 +52,9 @@ jobs:
           CLOUDSDK_COMPUTE_ZONE: ${{ env.COMPUTE_ZONE }}
           # The env variable PROJECT_ID is set by the step above
         with:
-          # 'force-key-file-overwrite' overwrites the SSH keys without asking for confirmation
           args: >
             compute scp ${GITHUB_WORKSPACE}/ ${{ env.INSTANCE_NAME }}:~/${{ env.DEPLOYMENT_ID }}
-            --recurse
+            --recurse --compress
       - name: Build and start
         uses: actions-hub/gcloud@master
         env:
