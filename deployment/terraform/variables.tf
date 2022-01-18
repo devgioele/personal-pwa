@@ -5,6 +5,10 @@ variable "project_name" {
   type = string
 }
 
+variable "project_suffix" {
+  type = string
+}
+
 variable "gcp_compute_name" {
   type = string
 }

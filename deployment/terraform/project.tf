@@ -1,17 +1,13 @@
-resource "random_id" "id" {
-  byte_length = 4
-  prefix      = var.project_name
+locals {
+  services   = toset(var.gcp_enabled_apis)
+  project_id = var.project_name + var.project_suffix
 }
 
 resource "google_project" "project" {
   name            = var.project_name
-  project_id      = random_id.id.hex
+  project_id      = local.project_id
   billing_account = var.gcp_billing_account
   org_id          = var.gcp_org_id
-}
-
-locals {
-  services = toset(var.gcp_enabled_apis)
 }
 
 # Services and APIs enabled within the new project

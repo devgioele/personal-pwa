@@ -1,4 +1,5 @@
 project_name              = "personal-pwa-1"
+project_suffix            = "-203029"
 gcp_compute_name          = "tf-compute-1"
 gcp_compute_machine_type  = "e2-medium"
 gcp_compute_zone          = "europe-west6-a"
