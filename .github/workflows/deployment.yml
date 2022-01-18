@@ -17,10 +17,16 @@ jobs:
       run:
         working-directory: ./deployment/terraform
     steps:
+      - name: List home dir
+        run: ls ~ -la
+      - name: Rm gcloud config
+        run: rm -rf ~/.config/gcloud
       - name: Load source code
         uses: actions/checkout@v2
         with:
           submodules: true
+      - name: List home dir
+        run: ls ~ -la
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -42,7 +48,7 @@ jobs:
           echo "INSTANCE_ID=$(terraform output -raw instance_id)" >> $GITHUB_ENV
           echo "COMPUTE_ZONE=$(terraform output -raw compute_zone)" >> $GITHUB_ENV
       - name: Copy source code
-        uses: actions-hub/gcloud@master
+        uses: actions-hub/gcloud@masterd
         env:
           # The env variable PROJECT_ID is set by the step above
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
@@ -55,7 +61,6 @@ jobs:
         uses: actions-hub/gcloud@master
         env:
           PROJECT_ID: ${{ steps.apply.outputs.project_id }}
-          APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
         with:
           # 1. ssh into the instance
           # 2. export GitHub secrets as env vars
