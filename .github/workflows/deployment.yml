@@ -48,7 +48,7 @@ jobs:
       - name: Extract output of Terraform Apply
         run: |
           echo "PROJECT_ID=$(terraform output -raw project_id)" >> $GITHUB_ENV
-          echo "INSTANCE_ID=$(terraform output -raw instance_id)" >> $GITHUB_ENV
+          echo "INSTANCE_NAME=$(terraform output -raw instance_name)" >> $GITHUB_ENV
           echo "COMPUTE_ZONE=$(terraform output -raw compute_zone)" >> $GITHUB_ENV
           echo "GCP_CREDS=$(terraform output -raw gcp_creds)" >> $GITHUB_ENV
       - name: Copy source code
@@ -59,7 +59,7 @@ jobs:
         with:
           # 'force-key-file-overwrite' overwrites the SSH keys without asking for confirmation
           args: >
-            compute scp . ${{ env.INSTANCE_ID }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
+            compute scp . ${{ env.INSTANCE_NAME }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
             --zone=${{ env.COMPUTE_ZONE }} --recurse --force-key-file-overwrite
       - name: Build and start
         uses: actions-hub/gcloud@master
