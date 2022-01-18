@@ -17,16 +17,12 @@ jobs:
 #      run:
 #        working-directory: deployment/terraform
     steps:
-      - name: List home dir
-        run: ls ~ -la
-      - name: Rm gcloud config
+      - name: Remove gcloud config
         run: rm -rf ~/.config/gcloud
       - name: Load source code
         uses: actions/checkout@v2
         with:
           submodules: true
-      - name: List home dir
-        run: ls ~ -la
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
