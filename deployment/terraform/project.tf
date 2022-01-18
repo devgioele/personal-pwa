@@ -36,7 +36,7 @@ module "service_accounts" {
 
 output "github_actions_key" {
   sensitive = true
-  value     = jsondecode(module.service_accounts.key).private_key
+  value     = base64encode(module.service_accounts.key)
 }
 
 output "project_id" {
