@@ -17,15 +17,6 @@ jobs:
       run:
         working-directory: deployment/terraform
     steps:
-      - name: List home/.config dir
-        run: ls -la ~/.config
-        working-directory: /
-      - name: Remove gcloud config
-        run: rm -rf ~/.config/gcloud
-        working-directory: /
-      - name: List home/.config dir
-        run: ls -la ~/.config
-        working-directory: /
       - name: Load source code
         uses: actions/checkout@v2
         with:
@@ -59,8 +50,8 @@ jobs:
         with:
           # 'force-key-file-overwrite' overwrites the SSH keys without asking for confirmation
           args: >
-            compute scp ./ ${{ env.INSTANCE_NAME }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
-            --zone=${{ env.COMPUTE_ZONE }} --recurse --force-key-file-overwrite
+            compute scp ${{ env.GITHUB_WORKSPACE }}/ ${{ env.INSTANCE_NAME }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
+            --zone=${{ env.COMPUTE_ZONE }} --recurse
       - name: Build and start
         uses: actions-hub/gcloud@master
         with:
