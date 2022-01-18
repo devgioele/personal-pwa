@@ -18,15 +18,15 @@ jobs:
         working-directory: deployment/terraform
     steps:
       - name: List home dir
-        run: ls ~ -la
+        run: ls -la ${{ env.HOME }}
       - name: Rm gcloud config
-        run: rm -rf ~/.config/gcloud
+        run: rm -rf ${{ env.HOME }}/.config/gcloud
       - name: Load source code
         uses: actions/checkout@v2
         with:
           submodules: true
       - name: List home dir
-        run: ls ~ -la
+        run: ls -la ${{ env.HOME }}
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
