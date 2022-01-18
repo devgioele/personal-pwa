@@ -81,7 +81,7 @@ jobs:
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
         with:
           args: |
-            compute scp . ${{ steps.apply.outputs.instance_id }}:~/deploy-${{ env.GITHUB_RUN_NUMBER }}
+            compute scp . ${{ steps.apply.outputs.instance_id }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
             --recurse
       - name: Build and start
         uses: actions-hub/gcloud@master
@@ -93,6 +93,6 @@ jobs:
           # 2. export GitHub secrets as env vars
           # 3. run the startup script
           args: |
-            compute ssh ${{ steps.apply.outputs.instance_id }} -- 
+            compute ssh ${{ steps.apply.outputs.instance_id }} --command
             'export TOR_PRIVATE_KEY=${{ secrets.TOR_PRIVATE_KEY }} &&
             ./deployment/startup.sh'
