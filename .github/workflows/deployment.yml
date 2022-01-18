@@ -74,7 +74,7 @@ jobs:
         id: apply
         # If a commit is pushed on the main branch
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve
+        run: terraform apply -var-file="definition.tfvars" -auto-approve
       - name: Copy source code to the compute engine instance
         uses: actions-hub/gcloud@master
         env:
