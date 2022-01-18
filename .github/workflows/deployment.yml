@@ -22,10 +22,10 @@ jobs:
         with:
           submodules: true
       - name: Print GITHUB_WORKFLOW
-        run: echo "${{ env.GITHUB_RUN_NUMBER }}"
+        run: echo "${GITHUB_RUN_NUMBER}"
         working-directory: /
       - name: Print GITHUB_RUN_NUMBER
-        run: echo "${{ env.GITHUB_RUN_NUMBER }}"
+        run: echo "${GITHUB_RUN_NUMBER}"
         working-directory: /
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -49,10 +49,10 @@ jobs:
           echo "COMPUTE_ZONE=$(terraform output -raw compute_zone)" >> $GITHUB_ENV
           echo "GCP_CREDS=$(terraform output -raw gcp_creds)" >> $GITHUB_ENV
       - name: Print GITHUB_WORKFLOW
-        run: echo "${{ env.GITHUB_RUN_NUMBER }}"
+        run: echo "${GITHUB_RUN_NUMBER}"
         working-directory: /
       - name: Print GITHUB_RUN_NUMBER
-        run: echo "${{ env.GITHUB_RUN_NUMBER }}"
+        run: echo "${GITHUB_RUN_NUMBER}"
         working-directory: /
       - name: Copy source code
         uses: actions-hub/gcloud@master
