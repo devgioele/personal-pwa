@@ -40,6 +40,7 @@ jobs:
         run: |
           echo "PROJECT_ID=$(terraform output -raw project_id)" >> $GITHUB_ENV
           echo "INSTANCE_ID=$(terraform output -raw instance_id)" >> $GITHUB_ENV
+          echo "COMPUTE_ZONE=$(terraform output -raw compute_zone)" >> $GITHUB_ENV
       - name: Copy source code
         uses: actions-hub/gcloud@master
         env:
@@ -48,7 +49,7 @@ jobs:
         with:
           args: >
             compute scp . ${{ env.INSTANCE_ID }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
-             --recurse
+             --zone=${{ env.COMPUTE_ZONE }} --recurse
       - name: Build and start
         uses: actions-hub/gcloud@master
         env:
