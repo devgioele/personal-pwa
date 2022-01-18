@@ -34,7 +34,7 @@ module "service_accounts" {
   generate_keys = true
 }
 
-output "github_actions_key" {
+output "gcp_creds" {
   sensitive = true
   value     = base64encode(module.service_accounts.key)
 }

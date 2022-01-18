@@ -50,13 +50,11 @@ jobs:
           echo "PROJECT_ID=$(terraform output -raw project_id)" >> $GITHUB_ENV
           echo "INSTANCE_ID=$(terraform output -raw instance_id)" >> $GITHUB_ENV
           echo "COMPUTE_ZONE=$(terraform output -raw compute_zone)" >> $GITHUB_ENV
-          echo 'GCP_KEY<<EOF' >> $GITHUB_ENV
-          terraform output -raw github_actions_key >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          echo "GCP_CREDS=$(terraform output -raw gcp_creds)" >> $GITHUB_ENV
       - name: Copy source code
         uses: actions-hub/gcloud@master
         env:
-          APPLICATION_CREDENTIALS: ${{ env.GCP_KEY }}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDS }}
           # The env variable PROJECT_ID is set by the step above
         with:
           # 'force-key-file-overwrite' overwrites the SSH keys without asking for confirmation
