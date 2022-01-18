@@ -15,7 +15,7 @@ variable "gcp_compute_image" {
   type = string
 }
 
-variable "compute_startup" {
+variable "compute_setup" {
   type = string
 }
 
