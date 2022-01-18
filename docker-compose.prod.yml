@@ -1,0 +1,18 @@
+version: "3.1"
+
+services:
+  tor:
+    # Repo: https://github.com/cmehay/docker-tor-hidden-service
+    image: goldy/tor-hidden-service:0.3.5.8
+    links:
+      - next
+    environment:
+      # Route incoming traffic on port 80 to the NextJS container on port 3000
+      SERVICE1_TOR_SERVICE_HOSTS: 80:next:3000
+      SERVICE1_TOR_SERVICE_VERSION: '3'
+      # Use environment variable
+      SERVICE1_TOR_SERVICE_KEY: '${TOR_PRIVATE_KEY}'
+  next:
+    # Takes Dockerfile from root folder to build the NextJS image
+    build: .
+    hostname: next
