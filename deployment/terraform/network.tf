@@ -18,5 +18,6 @@ resource "google_compute_firewall" "default" {
 }
 
 resource "google_compute_network" "default" {
-  name = "default-network"
+  name    = "default-network"
+  project = google_project.project.project_id
 }
