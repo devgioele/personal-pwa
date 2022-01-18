@@ -22,3 +22,9 @@ resource "google_compute_network" "default" {
   name    = "default-network"
   project = google_project.project.project_id
 }
+
+resource "google_compute_address" "static" {
+  name = "ipv4-address"
+  address_type = "EXTERNAL"
+}
+

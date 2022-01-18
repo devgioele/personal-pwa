@@ -18,12 +18,18 @@ resource "google_compute_instance" "default" {
 
   network_interface {
     network = "default"
-    access_config {}
+    access_config {
+      nat_ip = google_compute_address.static.address
+    }
   }
 
   # Causes a recreation of the resource if changed
   metadata_startup_script = file(var.gcp_compute_setup)
   depends_on              = [google_project_service.service]
+}
+
+output "ip_address" {
+  value = google_compute_address.static.address
 }
 
 output "instance_name" {
