@@ -8,6 +8,6 @@ terraform {
 
 // Google Cloud Platform
 provider "google" {
-  region = var.gcp_region
+  region      = var.gcp_region
   credentials = var.gcp_creds
 }
