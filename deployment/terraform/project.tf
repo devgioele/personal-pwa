@@ -1,6 +1,6 @@
 locals {
   services   = toset(var.gcp_enabled_apis)
-  project_id = var.project_name + var.project_suffix
+  project_id = "${var.project_name}${var.project_suffix}"
 }
 
 resource "google_project" "project" {
