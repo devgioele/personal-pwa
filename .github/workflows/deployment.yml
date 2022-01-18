@@ -56,7 +56,7 @@ jobs:
       - name: Copy source code
         uses: actions-hub/gcloud@master
         env:
-          APPLICATION_CREDENTIALS: ${{ secrets.GCP_KEY }}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_KEY }}
           # The env variable PROJECT_ID is set by the step above
         with:
           # 'force-key-file-overwrite' overwrites the SSH keys without asking for confirmation
