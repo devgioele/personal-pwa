@@ -28,7 +28,7 @@ module "service_accounts" {
   names         = ["github-actions"]
   display_name  = "GitHub Actions Service Account"
   project_roles = [
-    "${google_project.project.project_id}=>roles/viewer",
+    "${google_project.project.project_id}=>roles/editor",
     "${google_project.project.project_id}=>roles/compute.admin",
   ]
   generate_keys = true
