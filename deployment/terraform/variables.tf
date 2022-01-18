@@ -11,7 +11,7 @@ variable "gcp_compute_machine_type" {
 }
 
 variable "gcp_compute_zone" {
-  type = "string"
+  type = string
 }
 
 # See a list of possible images with `gcloud compute images list`
