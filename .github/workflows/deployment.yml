@@ -59,7 +59,7 @@ jobs:
         with:
           # 'force-key-file-overwrite' overwrites the SSH keys without asking for confirmation
           args: >
-            compute scp . ${{ env.INSTANCE_NAME }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
+            compute scp ./ ${{ env.INSTANCE_NAME }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
             --zone=${{ env.COMPUTE_ZONE }} --recurse --force-key-file-overwrite
       - name: Build and start
         uses: actions-hub/gcloud@master
