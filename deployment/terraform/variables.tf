@@ -27,6 +27,11 @@ variable "gcp_service_account_name" {
   type = string
 }
 
+variable "enabled_apis" {
+  description = "The list of APIs to activate within the project"
+  type = list(string)
+}
+
 ### Variables pulled from Terraform Cloud
 
 variable "gcp_billing_account" {

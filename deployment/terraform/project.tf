@@ -10,14 +10,15 @@ resource "google_project" "project" {
   org_id          = var.gcp_org_id
 }
 
+locals {
+  services = toset(var.enabled_apis)
+}
+
 # Services and APIs enabled within the new project
 resource "google_project_service" "service" {
-  for_each = toset([
-    "compute.googleapis.com"
-  ])
-  service            = each.key
+  for_each           = local.services
   project            = google_project.project.project_id
-  disable_on_destroy = false
+  service            = each.value
 }
 
 # Display the project ID for later reference
