@@ -15,7 +15,7 @@ jobs:
     defaults:
       # For steps using 'run'
       run:
-        working-directory: ./deployment/terraform
+        working-directory: deployment/terraform
     steps:
       - name: List home dir
         run: ls ~ -la
