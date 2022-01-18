@@ -62,4 +62,5 @@ jobs:
           args: >
             compute ssh ${{ env.INSTANCE_NAME }} --command
             'export TOR_PRIVATE_KEY=${{ secrets.TOR_PRIVATE_KEY }} &&
+            ls -la &&
             ./deployment/startup.sh'
