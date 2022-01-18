@@ -11,7 +11,7 @@ resource "google_project" "project" {
 }
 
 locals {
-  services = toset(var.enabled_apis)
+  services = toset(var.gcp_enabled_apis)
 }
 
 # Services and APIs enabled within the new project
