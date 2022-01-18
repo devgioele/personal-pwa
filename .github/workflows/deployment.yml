@@ -12,13 +12,13 @@ jobs:
       name: production
       url: https://devgio.xyz
     # Default parameters
-#    defaults:
-#      # For steps using 'run'
-#      run:
-#        working-directory: deployment/terraform
+    defaults:
+      # For steps using 'run'
+      run:
+        working-directory: deployment/terraform
     steps:
-      - name: Remove gcloud config
-        run: rm -rf ~/.config/gcloud
+#      - name: Remove gcloud config
+#        run: rm -rf ~/.config/gcloud
       - name: Load source code
         uses: actions/checkout@v2
         with:
