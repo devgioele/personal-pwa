@@ -39,6 +39,7 @@ jobs:
         id: apply
         run: terraform apply -auto-approve
       - name: Extract output of Terraform Apply
+        id: extract-terraform
         run: |
           echo "PROJECT_ID=$(terraform output -raw project_id)" >> $GITHUB_ENV
           echo "INSTANCE_NAME=$(terraform output -raw instance_name)" >> $GITHUB_ENV
@@ -58,8 +59,9 @@ jobs:
       - name: Build and start
         uses: actions-hub/gcloud@master
         env:
-          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDS }}
           CLOUDSDK_COMPUTE_ZONE: ${{ env.COMPUTE_ZONE }}
+          # PROJECT_ID is set by the step extract-terraform
+          # APPLICATION_CREDENTIALS is set by the first step using gcloud
         with:
           # 1. ssh into the instance
           # 2. export GitHub secrets as env vars
