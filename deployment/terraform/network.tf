@@ -1,5 +1,6 @@
 resource "google_compute_firewall" "default" {
   name    = "default-firewall"
+  project = google_project.project.project_id
   network = google_compute_network.default.name
 
   # HTTP and HTTPS
