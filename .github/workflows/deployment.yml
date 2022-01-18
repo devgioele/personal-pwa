@@ -3,13 +3,10 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  provision-build-start:
-    name: Provision, build, start
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     environment:
       name: production
@@ -29,10 +26,6 @@ jobs:
         with:
           # terraform_version: 0.13.0
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check
-        continue-on-error: true
       - name: Terraform Init
         id: init
         run: terraform init
@@ -41,50 +34,12 @@ jobs:
         run: terraform validate -no-color
       - name: Terraform Plan
         id: plan
-        if: github.event_name == 'pull_request'
         run: terraform plan -no-color
-        continue-on-error: true
-      - name: Update Pull Request
-        uses: actions/github-script@0.9.0
-        if: github.event_name == 'pull_request'
-        env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Validation 🤖\`${{ steps.validate.outputs.stdout }}\`
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-            
-            <details><summary>Show Plan</summary>
-            
-            \`\`\`\n
-            ${process.env.PLAN}
-            \`\`\`
-            
-            </details>
-            
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
-            
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
-      - name: Quit if Terraform Plan failed
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
       - name: Terraform Apply
         id: apply
-        # If a commit is pushed on the main branch
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
       - name: Copy source code to the compute engine instance
         uses: actions-hub/gcloud@master
-        # If a commit is pushed on the main branch
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
           PROJECT_ID: ${{ steps.apply.outputs.project_id }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
@@ -94,8 +49,6 @@ jobs:
             --recurse
       - name: Build and start
         uses: actions-hub/gcloud@master
-        # If a commit is pushed on the main branch
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
           PROJECT_ID: ${{ steps.apply.outputs.project_id }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
