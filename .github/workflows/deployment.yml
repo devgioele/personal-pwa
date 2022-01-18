@@ -46,9 +46,9 @@ jobs:
           # The env variable PROJECT_ID is set by the step above
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
         with:
-          args: |
+          args: >
             compute scp . ${{ env.INSTANCE_ID }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
-            --recurse
+             --recurse
       - name: Build and start
         uses: actions-hub/gcloud@master
         env:
@@ -58,7 +58,7 @@ jobs:
           # 1. ssh into the instance
           # 2. export GitHub secrets as env vars
           # 3. run the startup script
-          args: |
+          args: >
             compute ssh ${{ steps.apply.outputs.instance_id }} --command
-            'export TOR_PRIVATE_KEY=${{ secrets.TOR_PRIVATE_KEY }} &&
-            ./deployment/startup.sh'
+             'export TOR_PRIVATE_KEY=${{ secrets.TOR_PRIVATE_KEY }} &&
+             ./deployment/startup.sh'
