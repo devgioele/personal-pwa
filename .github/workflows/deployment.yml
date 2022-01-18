@@ -20,6 +20,7 @@ jobs:
       - name: Setup environment
         run: |
           echo "DEPLOYMENT_ID=deployment-$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+        working-directory: /
       - name: Load source code
         uses: actions/checkout@v2
         with:
