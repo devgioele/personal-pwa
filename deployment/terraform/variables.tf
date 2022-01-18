@@ -5,6 +5,10 @@ variable "project_name" {
   type = string
 }
 
+variable "gcp_compute_name" {
+  type = string
+}
+
 # See GCP machine types here: https://cloud.google.com/compute/docs/machine-types
 variable "gcp_compute_machine_type" {
   type = string
