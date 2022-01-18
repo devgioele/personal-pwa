@@ -17,9 +17,13 @@ jobs:
       run:
         working-directory: deployment/terraform
     steps:
+      - name: List home/.config dir
+        run: ls -la ~/.config
       - name: Remove gcloud config
         run: rm -rf ~/.config/gcloud
         working-directory: /
+      - name: List home/.config dir
+        run: ls -la ~/.config
       - name: Load source code
         uses: actions/checkout@v2
         with:
