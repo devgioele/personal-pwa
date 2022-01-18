@@ -77,7 +77,7 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
       - name: Quit if this is not a push on the main branch
-        if: !(github.ref == 'refs/heads/main' && github.event_name == 'push')
+        if: github.ref != 'refs/heads/main' || github.event_name != 'push'
         run: exit 1
       - name: Terraform Apply
         id: apply
