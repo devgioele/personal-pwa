@@ -76,10 +76,11 @@ jobs:
       - name: Quit if Terraform Plan failed
         if: steps.plan.outcome == 'failure'
         run: exit 1
+      - name: Quit if this is not a push on the main branch
+        if: !(github.ref == 'refs/heads/main' && github.event_name == 'push')
+        run: exit 1
       - name: Terraform Apply
         id: apply
-        # If a commit is pushed on the main branch
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
       - name: Copy source code to the compute engine instance
         uses: actions-hub/gcloud@master
