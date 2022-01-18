@@ -48,7 +48,7 @@ jobs:
           echo "INSTANCE_ID=$(terraform output -raw instance_id)" >> $GITHUB_ENV
           echo "COMPUTE_ZONE=$(terraform output -raw compute_zone)" >> $GITHUB_ENV
       - name: Copy source code
-        uses: actions-hub/gcloud@masterd
+        uses: actions-hub/gcloud@master
         env:
           # The env variable PROJECT_ID is set by the step above
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDS }}
