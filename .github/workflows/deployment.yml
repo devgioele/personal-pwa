@@ -46,8 +46,11 @@ jobs:
         run: |
           terraform apply -auto-approve -target=random_id.project_id
           terraform apply -auto-approve
+      - name: Add mask for sensitive output of Terraform Apply
+        # Hides the given value from workflow logs, even if it is not set as a secret
+        run: |
+          echo "::add-mask::$(terraform output -raw gcp_creds)"
       - name: Extract output of Terraform Apply
-        id: extract-terraform
         run: |
           echo "PROJECT_ID=$(terraform output -raw project_id)" >> $GITHUB_ENV
           echo "INSTANCE_NAME=$(terraform output -raw instance_name)" >> $GITHUB_ENV
@@ -67,9 +70,8 @@ jobs:
         uses: actions-hub/gcloud@master
         env:
           CLOUDSDK_COMPUTE_ZONE: ${{ env.COMPUTE_ZONE }}
-          # PROJECT_ID is set by the step extract-terraform
+          # PROJECT_ID is set by the step above
           # APPLICATION_CREDENTIALS is set by the first step using gcloud
-          TOR_PRIVATE_KEY: ${{ secrets.TOR_PRIVATE_KEY }}
         with:
           # 1. ssh into the instance
           # 2. export GitHub secrets as env vars
@@ -77,5 +79,5 @@ jobs:
           args: >
             compute ssh ${{ env.INSTANCE_NAME }} --command
             './${{ env.DEPLOYMENT_ID }}/deployment/startup.sh
-            noop
+            ${{ secrets.TOR_PRIVATE_KEY }}
             ${{ env.DEPLOYMENT_ID }}/docker-compose.prod.yml'
