@@ -1,4 +1,4 @@
-name: Delete workflows
+name: Delete workflow runs
 on:
   workflow_dispatch:
     inputs:
@@ -11,7 +11,8 @@ on:
         required: true
         default: '6'
 jobs:
-  del_runs:
+  delete:
+    name: Delete
     runs-on: ubuntu-latest
     steps:
       - name: Delete workflow runs
