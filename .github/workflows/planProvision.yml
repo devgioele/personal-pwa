@@ -1,4 +1,4 @@
-name: Deployment
+name: Plan Provision
 on:
   pull_request:
     branches:
