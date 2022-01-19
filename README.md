@@ -20,7 +20,13 @@ Because I want to keep the possibility of self-hosting the website on an embedde
 Docker Compose turned out to be very convenient.
 Adding a small DB in the future should be straightforward.
 
+### Architecture
+
 ![Architecture](documentation/personal-pwa-architecture.svg)
+
+Terraform's state is kept in Terraform Cloud, along with some variables/secrets.
+The onion service forwards incoming traffic from the TOR network to the web app, which is also available through `http`
+and `https`.
 
 ### Rejected alternatives 
 
