@@ -17,8 +17,9 @@ jobs:
       run:
         working-directory: deployment/terraform
     steps:
-      - name: Remove gcloud config
-        run: rm -rf ~/.config/gcloud
+      - name: Setup environment
+        run: |
+          echo "DEPLOYMENT_ID=deployment-$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
         working-directory: /
       - name: Load source code
         uses: actions/checkout@v2
@@ -38,35 +39,43 @@ jobs:
         run: terraform validate
       - name: Terraform Apply
         id: apply
-        run: terraform apply -auto-approve
+        # The 'target' flag used below is an exceptional case, because of a shortcoming of
+        # the 'service-accounts' module. We have to generate the random ID separately, before
+        # creating the other resources. See:
+        # https://github.com/terraform-google-modules/terraform-google-service-accounts/issues/46#issuecomment-895773725
+        run: |
+          terraform apply -auto-approve -target=random_id.project_id
+          terraform apply -auto-approve
       - name: Extract output of Terraform Apply
+        id: extract-terraform
         run: |
           echo "PROJECT_ID=$(terraform output -raw project_id)" >> $GITHUB_ENV
-          echo "INSTANCE_ID=$(terraform output -raw instance_id)" >> $GITHUB_ENV
+          echo "INSTANCE_NAME=$(terraform output -raw instance_name)" >> $GITHUB_ENV
           echo "COMPUTE_ZONE=$(terraform output -raw compute_zone)" >> $GITHUB_ENV
-          echo 'GITHUB_ACTIONS_KEY<<EOF' >> $GITHUB_ENV
-          terraform output -raw github_actions_key >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          echo "GCP_CREDS=$(terraform output -raw gcp_creds)" >> $GITHUB_ENV
       - name: Copy source code
         uses: actions-hub/gcloud@master
         env:
-          APPLICATION_CREDENTIALS: ${{ secrets.GITHUB_ACTIONS_KEY }}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDS }}
+          CLOUDSDK_COMPUTE_ZONE: ${{ env.COMPUTE_ZONE }}
           # The env variable PROJECT_ID is set by the step above
         with:
-          # 'force-key-file-overwrite' overwrites the SSH keys without asking for confirmation
           args: >
-            compute scp . ${{ env.INSTANCE_ID }}:~/deployment-${{ env.GITHUB_RUN_NUMBER }}
-            --zone=${{ env.COMPUTE_ZONE }} --recurse --force-key-file-overwrite
+            compute scp ${GITHUB_WORKSPACE}/ ${{ env.INSTANCE_NAME }}:~/${{ env.DEPLOYMENT_ID }}
+            --recurse --compress
       - name: Build and start
         uses: actions-hub/gcloud@master
         env:
-          PROJECT_ID: ${{ steps.apply.outputs.project_id }}
-          # No need to set APPLICATION_CREDENTIALS again
+          CLOUDSDK_COMPUTE_ZONE: ${{ env.COMPUTE_ZONE }}
+          # PROJECT_ID is set by the step extract-terraform
+          # APPLICATION_CREDENTIALS is set by the first step using gcloud
+          TOR_PRIVATE_KEY: ${{ secrets.TOR_PRIVATE_KEY }}
         with:
           # 1. ssh into the instance
           # 2. export GitHub secrets as env vars
           # 3. run the startup script
           args: >
-            compute ssh ${{ steps.apply.outputs.instance_id }} --command
-            'export TOR_PRIVATE_KEY=${{ secrets.TOR_PRIVATE_KEY }} &&
-            ./deployment/startup.sh'
+            compute ssh ${{ env.INSTANCE_NAME }} --command
+            './${{ env.DEPLOYMENT_ID }}/deployment/startup.sh
+            ${{ env.TOR_PRIVATE_KEY }}
+            ${{ env.DEPLOYMENT_ID }}/docker-compose.prod.yml'
