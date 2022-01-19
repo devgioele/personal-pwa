@@ -3,11 +3,11 @@ on:
   workflow_dispatch:
     inputs:
       days:
-        description: 'Number of days.'
+        description: 'Number of days to keep runs'
         required: true
         default: '30'
       minimum_runs:
-        description: 'The minimum runs to keep for each workflow.'
+        description: 'The minimum number of runs to keep for each workflow'
         required: true
         default: '6'
 jobs:
