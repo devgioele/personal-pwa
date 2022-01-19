@@ -1,12 +1,12 @@
-name: Deployment
+name: Plan provision
 on:
   pull_request:
     branches:
       - main
 
 jobs:
-  plan-provision:
-    name: Plan provision
+  plan:
+    name: Plan
     runs-on: ubuntu-latest
     # Default parameters
     defaults:
