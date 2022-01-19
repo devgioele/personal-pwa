@@ -1,11 +1,15 @@
 locals {
-  services   = toset(var.gcp_enabled_apis)
-  project_id = "${var.project_name}${var.project_suffix}"
+  services = toset(var.gcp_enabled_apis)
+}
+
+resource "random_id" "project_id" {
+  byte_length = 4
+  prefix      = var.project_name
 }
 
 resource "google_project" "project" {
   name            = var.project_name
-  project_id      = local.project_id
+  project_id      = random_id.project_id.hex
   billing_account = var.gcp_billing_account
   org_id          = var.gcp_org_id
 }
@@ -17,6 +21,7 @@ resource "google_project_service" "service" {
   service            = each.value
 }
 
+# Wait after enabling APIs, because they result as created before the propagation of their effect is complete
 resource "time_sleep" "wait_api_enabling" {
   depends_on = [google_project_service.service]
 
