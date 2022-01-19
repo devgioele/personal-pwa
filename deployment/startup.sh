@@ -1,7 +1,11 @@
 #!/bin/bash
 
-echo "arg1 = $1"
-echo "arg2 = $2"
+# Quit if wrong number of args
+if [ "$#" -ne 2 ]; then
+    echo "Illegal number of arguments!"
+    exit 1
+fi
+
 # Remove running containers
 # shellcheck disable=SC2046
 sudo docker rm -f $(sudo docker ps -a -q)
