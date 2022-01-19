@@ -1,34 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+[![Deployment](https://github.com/devgioele/personal-pwa/actions/workflows/deployment.yml/badge.svg)](https://github.com/devgioele/personal-pwa/actions/workflows/deployment.yml)
 
-## Getting Started
+# devgio.xyz
 
-First, run the development server:
+My personal website using [Next.js](https://nextjs.org/) to let people know who I am
+and what I do.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## DevOps
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+One goal of this website is to experiment with different DevOps techniques to deploy code.
+This allows me to expand my knowledge base and get insight into the advantages and disadvantages 
+of various solutions.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+# Requirements
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+The key requirement is **portability**, meaning that the infrastructure must be easy to change.
+Scalability is less important, as the number of users of this web app are predicted to be fairly low.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Because I want to keep the possibility of self-hosting the website on an embedded system, like the Raspberry Pi,
+Docker Compose turned out to be very convenient.
+Adding a small DB in the future should be straightforward.
 
-## Learn More
+After all...
+> Good design is easy to change
 
-To learn more about Next.js, take a look at the following resources:
+![Architecture](documentation/personal-pwa-architecture.svg)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Rejected alternatives 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+If I had chosen Google's App Engine or Kubernetes Engine, I would have lost portability, as such an infrastructure
+is not reproducible on a single-machine setup.
 
-## Deploy on Vercel
+### Encountered difficulties
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Terraform is a great tool to separate concerns and abstract the infrastructure. When the required resources are available
+as Terraform resources, the development is accelerated since developers do not have to learn how to use the GUI of the
+hosting provider.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+However, the resources Terraform provides for the Google Cloud Platform were hard to understand.
+The documentation of all the different resource arguments could be more detailed.
+
+Furthermore, the way Google designed its cloud service does not fit well with Terraform interface. To use Terraform,
+I had to create an "admin" project. This project persists across creations/destruction of infrastructure and gives
+Terraform the permissions to provision resources.
+
+## TODOs
+
