@@ -58,5 +58,6 @@ of storing the value in an environment variable.
 - [ ] Delete old deployed code from the hosting machine. Let the developers choose with a single variable how many
 codebase copies they want to keep. E.g. keep only 2 codebase copies (the current one and the previous one).
 - [ ] Remove the custom firewall if the default ones, with tags `http-server` and `https-server`, suffice.
-- [ ] Build the NextJS Docker image on the GitHub Actions instead of on the hosting machine. This would speed up
-deployment, since the hosting machine is slower than GitHub Actions' servers.
+- [ ] Build the NextJS Docker image on GitHub Actions instead of on the hosting machine. This would speed up
+deployment, since the hosting machine is slower than GitHub Actions' servers. Publish the Docker image on a public
+Docker Hub repository. The source code is public, so it does not make sense to keep the image private.
