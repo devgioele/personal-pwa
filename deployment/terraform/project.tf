@@ -25,7 +25,7 @@ resource "google_project_service" "service" {
 resource "time_sleep" "wait_api_enabling" {
   depends_on = [google_project_service.service]
 
-  create_duration = "60s"
+  create_duration = "30s"
 }
 
 module "service_accounts" {
