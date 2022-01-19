@@ -7,7 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch",
-    "test:devops": "jest"
+    "test:quiet": "jest"
   },
   "dependencies": {
     "@emotion/cache": "^11.7.1",
