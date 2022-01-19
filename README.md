@@ -11,7 +11,7 @@ One goal of this website is to experiment with different DevOps techniques to de
 This allows me to expand my knowledge base and get insight into the advantages and disadvantages 
 of various solutions.
 
-# Requirements
+### Requirements
 
 The key requirement is **portability**, meaning that the infrastructure must be easy to change.
 Scalability is less important, as the number of users of this web app are predicted to be fairly low.
