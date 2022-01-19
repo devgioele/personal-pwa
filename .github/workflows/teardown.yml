@@ -1,0 +1,29 @@
+name: Teardown
+on: workflow_dispatch
+
+jobs:
+  destroy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    # Default parameters
+    defaults:
+      # For steps using 'run'
+      run:
+        working-directory: deployment/terraform
+    steps:
+      - name: Load source code
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          # terraform_version: 0.13.0
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: false
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      - name: Terraform Destroy
+        id: destroy
+        run: terraform destroy
