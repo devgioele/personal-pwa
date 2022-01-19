@@ -12,5 +12,5 @@ runs:
       run: yarn lint
       shell: bash
     - name: Run unit tests
-      run: yarn test:devops
+      run: yarn test:quiet
       shell: bash
