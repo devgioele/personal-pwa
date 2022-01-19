@@ -39,7 +39,13 @@ jobs:
         run: terraform validate
       - name: Terraform Apply
         id: apply
-        run: terraform apply -auto-approve
+        # The 'target' flag used below is an exceptional case, because of a shortcoming of
+        # the 'service-accounts' module. We have to generate the random ID separately, before
+        # creating the other resources. See:
+        # https://github.com/terraform-google-modules/terraform-google-service-accounts/issues/46#issuecomment-895773725
+        run: |
+          terraform apply -auto-approve -target=random_id.project_id
+          terraform apply -auto-approve
       - name: Extract output of Terraform Apply
         id: extract-terraform
         run: |
