@@ -69,6 +69,7 @@ jobs:
           CLOUDSDK_COMPUTE_ZONE: ${{ env.COMPUTE_ZONE }}
           # PROJECT_ID is set by the step extract-terraform
           # APPLICATION_CREDENTIALS is set by the first step using gcloud
+          TOR_PRIVATE_KEY: ${{ secrets.TOR_PRIVATE_KEY }}
         with:
           # 1. ssh into the instance
           # 2. export GitHub secrets as env vars
@@ -76,5 +77,5 @@ jobs:
           args: >
             compute ssh ${{ env.INSTANCE_NAME }} --command
             './${{ env.DEPLOYMENT_ID }}/deployment/startup.sh
-            ${{ secrets.TOR_PRIVATE_KEY }}
+            "$TOR_PRIVATE_KEY"
             ${{ env.DEPLOYMENT_ID }}/docker-compose.prod.yml'
