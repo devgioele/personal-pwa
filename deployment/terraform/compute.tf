@@ -25,8 +25,8 @@ resource "google_compute_instance" "default" {
     }
   }
 
-  # Network tags (contains the tags of the custom firewall atm)
-  tags = google_compute_firewall.default.target_tags
+  # Network tags
+  tags = ["web", "http-server", "https-server"]
 
   # Causes a recreation of the resource if changed
   metadata_startup_script = file(var.gcp_compute_setup)
