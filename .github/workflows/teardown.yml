@@ -3,7 +3,7 @@ on: workflow_dispatch
 
 jobs:
   destroy:
-    name: Deploy
+    name: Remove Infrastructure
     runs-on: ubuntu-latest
     # Default parameters
     defaults:
