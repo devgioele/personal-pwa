@@ -1,5 +1,10 @@
 #!/bin/bash
 
+echo "Arguments:"
+for i in "$@"; do
+  echo "$i"
+done
+
 # Quit if wrong number of args
 if [ "$#" -ne 2 ]; then
     echo "Illegal number of arguments!"
