@@ -16,3 +16,6 @@ services:
     # Takes Dockerfile from root folder to build the NextJS image
     build: .
     hostname: next
+    ports:
+      # Map host port 80 to container port 3000
+      - "80:3000"
