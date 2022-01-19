@@ -15,7 +15,8 @@ resource "google_compute_firewall" "default" {
     ports    = ["22"]
   }
 
-  source_tags = ["web"]
+  source_ranges = ["0.0.0.0/0"]
+  target_tags = ["web"]
 }
 
 resource "google_compute_network" "default" {
