@@ -4,7 +4,7 @@ import { Container, Typography } from '@mui/material';
 const Home: NextPage = () => {
   return (
     <Container maxWidth="lg">
-      <Typography variant="h1">Hi!</Typography>
+      <Typography variant="h1">Welcome!</Typography>
       <Typography variant="body1">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos
         laboriosam libero sed sit unde! Alias, pariatur perferendis. Aliquam cum
