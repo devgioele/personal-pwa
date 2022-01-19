@@ -1,4 +1,6 @@
 data "google_compute_zones" "available" {
+  depends_on = [time_sleep.wait_api_enabling]
+
   project = google_project.project.project_id
 }
 

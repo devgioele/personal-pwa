@@ -1,3 +1,4 @@
+# The project id (= project_name + project_suffix) cannot be longer than 26 chars
 project_name              = "personal-pwa-1"
 project_suffix            = "-203029"
 gcp_compute_name          = "tf-compute-1"

@@ -15,6 +15,15 @@ resource "google_project_service" "service" {
   for_each           = local.services
   project            = google_project.project.project_id
   service            = each.value
+  timeouts {
+    create = ""
+  }
+}
+
+resource "time_sleep" "wait_api_enabling" {
+  depends_on = [google_project_service.service]
+
+  create_duration = "60s"
 }
 
 module "service_accounts" {
@@ -23,11 +32,12 @@ module "service_accounts" {
   project_id    = google_project.project.project_id
   names         = ["github-actions"]
   display_name  = "GitHub Actions Service Account"
+  generate_keys = true
   project_roles = [
     "${google_project.project.project_id}=>roles/editor",
     "${google_project.project.project_id}=>roles/compute.admin",
   ]
-  generate_keys = true
+
 }
 
 output "gcp_creds" {

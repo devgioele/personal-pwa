@@ -1,6 +1,3 @@
-# Project ID = project_name + (random ID of 4 chars)
-# To not exceed the limit of 30 chars, the project name
-# cannot be longer than 26 chars.
 variable "project_name" {
   type = string
 }
